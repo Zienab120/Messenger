@@ -1,6 +1,6 @@
 import {Component, Fragment} from "react";
-import {Menu, Transition} from "@headlessui/react";
-import {EllipsisVerticalIcon, LockClosedIcon, UserIcon} from "@heroicons/react/24/solid/index.js";
+import {Menu, MenuButton, Transition} from "@headlessui/react";
+import {EllipsisVerticalIcon, LockClosedIcon, ShieldCheckIcon, UserIcon} from "@heroicons/react/24/solid/index.js";
 
 
 export default function UserOptionsDropdown ({conversation}) {
@@ -37,9 +37,9 @@ export default function UserOptionsDropdown ({conversation}) {
         <div>
             <Menu as="div" className="relative inline-block text-left">
                 <div>
-                    <Menu.Button className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-black/40">
+                    <MenuButton className="flex justify-center items-center w-8 h-8 rounded-full hover:bg-black/40">
                         <EllipsisVerticalIcon className="w-5 h-5"/>
-                    </Menu.Button>
+                    </MenuButton>
                 </div>
                 <Transition as={Fragment}
                             enter="transition duration-100 ease-out"
@@ -87,7 +87,7 @@ export default function UserOptionsDropdown ({conversation}) {
                                         )}
                                         {!conversation.is_admin && (
                                             <>
-                                                <UserIcon className="w-4 h-4 mr-2"/>
+                                                <ShieldCheckIcon className="w-4 h-4 mr-2"/>
                                                 Make Admin
                                             </>
                                         )}
@@ -100,4 +100,5 @@ export default function UserOptionsDropdown ({conversation}) {
             </Menu>
         </div>
     )
-}
+};
+// export default UserOptionsDropdown;

@@ -17,7 +17,20 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
+        screens: {
+            xs: "420px",
+            sm: "680px",
+            md: "768px",
+            lg: "1024px",
+            xl: "1280px",
+         "2xl": "1536px",
+        },
     },
 
-    plugins: [forms],
+    plugins: [forms, require("daisyui")],
+    // daisyUI config (optional - here are the default values)
+    daisyui: {
+    themes: ["dark"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+  },
+
 };

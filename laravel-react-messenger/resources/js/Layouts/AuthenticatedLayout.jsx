@@ -4,15 +4,75 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import {Link, usePage} from '@inertiajs/react';
+import Echo from 'laravel-echo';
 
 export default function Authenticated({ header, children }) {
     const page = usePage();
     const user = page.props.auth.user;
-
+    const conversations = page.props.conversations;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    useEffect(() =>{
+        conversations.forEach(conversation => {
+            let channel =`message.group${conversation.id}`;
+
+            if(conversation.is_user)
+            {
+                channel = `message.user.${[
+                    parseInt(user.id),
+                    parseInt(conversation.id),
+                ]
+                    .sort((a,b)=> a - b)
+                    .join("-")}`;
+            }
+
+            Echo.private(channel)
+                .error((error) =>{
+                    console.log(error);
+                })
+                .listen("SocketMessage",(e)=>{
+                    console.log("SocketMessage",e);
+                    const message = e.message;
+
+                    // emit("message.created",message);
+                    if(message.sender_id===user.id)
+                        return;
+
+                    // emit("newMessageNotification",{
+                    //     user: message.sender,
+                    //     group_id: message.group_id,
+                    //     message:
+                    //         message.message || 
+                    //         `Shared ${
+                    //             message.attachments.length === 1
+                    //                 ? "an attachment"
+                    //                 : message.attachments.length +
+                    //                   "attachments"
+                    //         }`,
+                    // });
+                })
+        });
+
+        return () =>{
+            conversations.forEach((conversation)=> {
+                let channel =`message.group${conversation.id}`;
+
+                if(conversation.is_user)
+                {
+                    channel = `message.user.${[
+                        parseInt(user.id),
+                        parseInt(conversation.id),
+                    ]
+                        .sort((a,b)=> a - b)
+                        .join("-")}`;
+                }
+                Echo.leave(channel);
+            });
+        };
+    },[conversations]);
+    // useEffect(()=>{console.log("AuthenticatedLayout moutned");},[]);
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col h-screen">
+            <nav className="bg-white dark:bg-gray-800 border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -22,11 +82,11 @@ export default function Authenticated({ header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"> */}
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
+                                    Dashboardffffffffffffffffffffffffffffffffffffffffffffff
                                 </NavLink>
-                            </div>
+                            {/* </div> */}
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -121,7 +181,7 @@ export default function Authenticated({ header, children }) {
                 </header>
             )}
 
-            <main>{children}</main>
+            {children}
         </div>
     );
 }

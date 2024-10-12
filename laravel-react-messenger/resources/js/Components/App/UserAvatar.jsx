@@ -22,4 +22,5 @@ const userAvatar = ({user, online = null, profile = false}) => {
             )}
         </>
     );
-}
+};
+export default userAvatar;
