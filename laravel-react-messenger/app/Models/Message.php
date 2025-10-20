@@ -13,6 +13,7 @@ class Message extends Model
         'sender_id',
         'receiver_id',
         'group_id',
+        'conversation_id'
     ];
 
     public function sender()

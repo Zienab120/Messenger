@@ -49,36 +49,36 @@ const ChatLayout = ({children}) => {
     }, [localConversations]);
 
 
-    // useEffect(() => {
-    //     Echo.join("online")
-    //         .here((users) => {
-    //             const onlineUsersObj = Object.fromEntries(users.map((user) => [user.id, user]));
+    useEffect(() => {
+        Echo.join("online")
+            .here((users) => {
+                const onlineUsersObj = Object.fromEntries(users.map((user) => [user.id, user]));
 
-    //             setOnlineUsers((perviousOnlineUsers) => {
-    //                 return {...perviousOnlineUsers, ...onlineUsersObj};
-    //             });
-    //         })
-    //         .joining((user) => {
-    //             setOnlineUsers((perviousOnlineUsers) => {
-    //                 const updatedUsers = {...perviousOnlineUsers};
-    //                 updatedUsers[user.id] = user;
-    //                 return updatedUsers;
-    //             })
-    //         })
-    //         .leaving((user) => {
-    //             setOnlineUsers((perviousOnlineUsers) => {
-    //                 const updatedUsers = {...perviousOnlineUsers};
-    //                 delete updatedUsers[user.id];
-    //                 return updatedUsers;
-    //             })
-    //         })
-    //         .error((error) => {
-    //             console.log('error', error);
-    //         })
-    //     return () => {
-    //         Echo.leave('online');
-    //     }
-    // }, []);
+                setOnlineUsers((perviousOnlineUsers) => {
+                    return {...perviousOnlineUsers, ...onlineUsersObj};
+                });
+            })
+            .joining((user) => {
+                setOnlineUsers((perviousOnlineUsers) => {
+                    const updatedUsers = {...perviousOnlineUsers};
+                    updatedUsers[user.id] = user;
+                    return updatedUsers;
+                })
+            })
+            .leaving((user) => {
+                setOnlineUsers((perviousOnlineUsers) => {
+                    const updatedUsers = {...perviousOnlineUsers};
+                    delete updatedUsers[user.id];
+                    return updatedUsers;
+                })
+            })
+            .error((error) => {
+                console.log('error', error);
+            })
+        return () => {
+            Echo.leave('online');
+        }
+    }, []);
 
     return (<>
             <div className="flex-1 w-full overflow-hidden">
@@ -104,24 +104,24 @@ const ChatLayout = ({children}) => {
                         />
                     </div>
                    <div className="flex-1 overflow-auto">
-                         {/* {sortedConversations&&sortedConversations.map((conversation) => (
-                            <ConversationItem>
+                         {sortedConversations&&sortedConversations.map((conversation) => (
+                            <ConversationItem
                             key={`${conversation.is_group ? "group_" : "user_"}${conversation.id}`}
                             conversation = {conversation}
                             online ={!!isUserOnline(conversation.id)}
                                 selectedConversation={selectedConversation}
-                                </ConversationItem>
+                                />
                                 
-                        ))} */}
+                        ))}
 
-{sortedConversations && sortedConversations.map((conversation) => (
+{/* {sortedConversations && sortedConversations.map((conversation) => (
     <ConversationItem
         key={`${conversation.is_group ? "group_" : "user_"}${conversation.id}`}
         conversation={conversation}
         online={!!isUserOnline(conversation.id)}
         selectedConversation={selectedConversation}
-    />
-))}
+    /> */}
+{/* ))} */}
                     </div>
                 </div>
                  <div className="flex-1 flex flex-col overflow-hidden">
